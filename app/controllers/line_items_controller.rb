@@ -26,9 +26,11 @@ class LineItemsController < ApplicationController
     product = Product.find(params[:product_id])
     @line_item = @cart.line_items.build(product: product)
 
+    reset_counter
+
     respond_to do |format|
       if @line_item.save
-        format.html {redirect_to cart_url(@line_item.cart)}
+        format.html { redirect_to cart_url(@line_item.cart) }
         format.html { redirect_to line_item_url(@line_item), notice: "Line item was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -57,13 +59,18 @@ class LineItemsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_line_item
-      @line_item = LineItem.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def line_item_params
-      params.require(:line_item).permit(:product_id, :cart_id)
-    end
+  def reset_counter
+    session[:counter] = 0
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_line_item
+    @line_item = LineItem.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def line_item_params
+    params.require(:line_item).permit(:product_id, :cart_id)
+  end
 end
