@@ -1,4 +1,5 @@
 class LineItemsController < ApplicationController
+  include CurrentCart
   before_action :set_cart, only: %i[create]
   before_action :set_line_item, only: %i[ show edit update destroy ]
 
@@ -27,7 +28,8 @@ class LineItemsController < ApplicationController
 
     respond_to do |format|
       if @line_item.save
-        format.html { redirect_to cart_url(@line_item.cart) }
+        format.turbo_stream { @current_item = @line_item }
+        format.html { redirect_to store_index_url }
       else
         format.html { render :new, status: :unprocessable_entity }
       end

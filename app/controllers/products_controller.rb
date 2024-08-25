@@ -38,6 +38,7 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.update(product_params)
         format.html { redirect_to product_url(@product), notice: "Product was successfully updated." }
+        @product.broadcast_replace_later_to 'products', partial: 'store/product'
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
