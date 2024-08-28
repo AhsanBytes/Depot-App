@@ -5,10 +5,12 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by(name: params[:name])
-    if user&.authenticate(params[:password])
+    if user && user.authenticate(params[:password])
       session[:user_id] = user.id
+      Rails.logger.debug "Session user_id set to: #{session[:user_id]}" # Add this line for debugging
       redirect_to admin_url
     else
+      Rails.logger.debug "Login failed for user: #{params[:name]}" # Add this line for debuggingf
       redirect_to login_url, alert: "Invalid user/password combination"
     end
   end
