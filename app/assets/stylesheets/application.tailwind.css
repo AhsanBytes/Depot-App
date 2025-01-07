@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@layers components {
+  .input-field { @apply
+    block shadow rounded-md border border-green-400 outline-none px-3 py-2 mt-2 w-full
+  }
+}
 /*
 
 @layer components {
@@ -11,3 +16,4 @@
 }
 
 */
+@import 'actiontext.css';
